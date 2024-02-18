@@ -9,12 +9,14 @@ cachetools==5.3.1
 chardet==3.0.4
 crlibm==1.0.3
 flatbuffers==23.5.26
+Flask==2.2.2
 frozenlist==1.4.0
 grpcio==1.56.0
 gunicorn==21.2.0
 idna==2.10
 infinity==1.5
 jsonpointer==2.1
+Jinja2==3.1.2
 keyrings.alt==4.1.0
 libclang==14.0.1
 lockfile==0.12.2
