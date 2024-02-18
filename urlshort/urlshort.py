@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 import json
-import os.path
 from werkzeug.utils import secure_filename
 
 bp = Blueprint('urlshort',__name__)
@@ -35,7 +34,7 @@ def your_url():
         else:
             f = request.files['file']
             full_name = request.form['code'] + secure_filename(f.filename)
-            f.save('/Users/olasojiamujo/Desktop/url-shortener/urlshort/static/user_files/' + full_name)
+            f.save('./static/user_files/' + full_name)
             urls[request.form['code']] = {'file':full_name}
 
 
