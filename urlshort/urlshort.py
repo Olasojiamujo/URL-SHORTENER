@@ -2,11 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 import json
 from werkzeug.utils import secure_filename
 from .extensions import db
-from .routes import main
 import os
 
 bp = Blueprint('urlshort',__name__)
-app.config["SQLALCHEMY_DATABASE_URI"]=os.environs.get("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
 
 #replaced by Blueprint
 #app = Flask(__name__) #name of the modeule running the Flask
