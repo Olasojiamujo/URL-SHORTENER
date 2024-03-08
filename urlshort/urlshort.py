@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 import json
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
-import os
 
 db = SQLAlchemy()
 bp = Blueprint('urlshort',__name__)
