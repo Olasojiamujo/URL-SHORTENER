@@ -10,7 +10,7 @@ def create_app(test_config=None):
 
     # Configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")  # Example for SQLite, adjust for your DB
-    #app.secret_key = 'your_secret_key'  # Set a secret key for sessions and cookies
+    app.secret_key = 'your_secret_key'  # Set a secret key for sessions and cookies
 
     # Initialize the database with your Flask app
     db.init_app(app)
