@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 import json
 from werkzeug.utils import secure_filename
-from .extensions import db
+from flask_sqlalchemy import SQLAlchemy
 import os
 
 bp = Blueprint('urlshort',__name__)
@@ -12,15 +12,18 @@ app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
 #app.secret_key = 'h432hi5ohi3h5i5hi3o2hi'
 #print(__name__)
 
+db = SQLAlchemy(app)
+
 class URL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
     url = db.Column(db.String(255))
-    file_path = db.Column(db.String(255))
+    filepath = db.Column(db.String(255))
 
-    def __repr__(self):
-        return '<URL %r>' % self.code
-
+    def __init__(self, code, url=None, filepath=None):
+        self.code = code
+        self.url = url
+        self.filepath = filepath
 
 #creating a route
 @bp.route('/') #redirect to the base url.
@@ -38,13 +41,13 @@ def your_url():
             flash('That Shortname has already been taken. Please use another short name')
             return redirect(url_for('urlshort.home'))
 
-        if 'url' in request.form:
+        if 'url' in request.form.keys():
             new_url = URL(code=code, url=request.form['url'])
         else:
             f = request.files['file']
             full_name = code + secure_filename(f.filename)
             f.save('./static/user_files/' + full_name)
-            new_url = URL(code=code, file_path=full_name)
+            new_url = URL(code=code, filepath=full_name)
 
         db.session.add(new_url)
         db.session.commit()
@@ -53,15 +56,15 @@ def your_url():
     else:
         return redirect(url_for('urlshort.home'))
 
+
 @bp.route('/<string:code>')
 def redirect_to_url(code):
-    url = URL.query.filter_by(code=code).first()
-
-    if url:
-        if url.url:
-            return redirect(url.url)
+    url_record = URL.query.filter_by(code=code).first()
+    if url_record:
+        if url_record.url:
+            return redirect(url_record.url)
         else:
-            return redirect(url_for('static', filename='user_files/' + url.file_path))
+            return redirect(url_for('static', filename='user_files/' + url_record.filepath))
     return abort(404)
 
 
