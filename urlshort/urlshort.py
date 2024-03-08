@@ -4,15 +4,8 @@ from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 import os
 
+db = SQLAlchemy()
 bp = Blueprint('urlshort',__name__)
-app.config["SQLALCHEMY_DATABASE_URI"]=os.environ.get("DATABASE_URL")
-
-#replaced by Blueprint
-#app = Flask(__name__) #name of the modeule running the Flask
-#app.secret_key = 'h432hi5ohi3h5i5hi3o2hi'
-#print(__name__)
-
-db = SQLAlchemy(app)
 
 class URL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
