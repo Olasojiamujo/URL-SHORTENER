@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 import os
 import json
 from werkzeug.utils import secure_filename
-from .models import URL
+from .models import SHORTNAME
 from .extensions import db
 
 bp = Blueprint('urlshort', __name__)
@@ -19,19 +19,19 @@ def favicon():
 def your_url():
     if request.method == 'POST':
         code = request.form['code']
-        existing_url = URL.query.filter_by(code=code).first()
+        existing_url = SHORTNAME.query.filter_by(code=code).first()
 
         if existing_url:
             flash('That Shortname has already been taken. Please use another short name')
             return redirect(url_for('urlshort.home'))
 
         if 'url' in request.form.keys():
-            new_url = URL(code=code, user_url=request.form['user_url'])
+            new_url = SHORTNAME(code=code, user_url=request.form['user_url'])
         else:
             file = request.files['file']
             if file:  # Check if a file is actually uploaded
                 file_content = file.read()
-                new_url = URL(code=code, file_content=file_content, filename=secure_filename(file.filename))
+                new_url = SHORTNAME(code=code, file_content=file_content, filename=secure_filename(file.filename))
             else:
                 flash('No file uploaded.')
                 return redirect(url_for('urlshort.home'))
@@ -49,7 +49,7 @@ def your_url():
 
 @bp.route('/<string:code>')
 def redirect_to_url(code):
-    url_record = URL.query.filter_by(code=code).first()
+    url_record = SHORTNAME.query.filter_by(code=code).first()
     if url_record:
         if url_record.user_url:
             return redirect(url_record.user_url)
