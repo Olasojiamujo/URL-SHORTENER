@@ -54,7 +54,14 @@ def your_url():
 
         db.session.add(new_url)
         db.session.commit()
-        return render_template('your_url.html', code=code)
+
+        code = URL.query.filter_by(code=True).all()
+
+        context = {
+            'code': code
+        }
+        
+        return render_template('your_url.html', **context)
     else:
         return redirect(url_for('urlshort.home'))
 
