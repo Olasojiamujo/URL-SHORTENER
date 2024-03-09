@@ -11,6 +11,7 @@ db = SQLAlchemy()
 bp = Blueprint('urlshort', __name__)
 
 class URL(db.Model):
+    __tablename__ = 'url'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
     user_url = db.Column(db.String(255), nullable=True)
