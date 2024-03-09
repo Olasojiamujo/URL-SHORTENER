@@ -1,9 +1,9 @@
+import os
+
 from flask import Flask, render_template
 from .extensions import db
-from .commands import create_tables
 from .urlshort import bp
-from .models import SHORTNAME
-import os
+
 
 def create_app(test_config=None):
     app = Flask(__name__) # Name of the module running the Flask app
@@ -17,8 +17,6 @@ def create_app(test_config=None):
     db.init_app(app)
 
     app.register_blueprint(bp)
-
-    app.cli.add_command(create_tables)
 
     # Application-wide error handler
     @app.errorhandler(404)
