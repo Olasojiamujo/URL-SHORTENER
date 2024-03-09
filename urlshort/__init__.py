@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from .extensions import db
 from .commands import create_tables
 from .urlshort import bp
+from .models import SHORTNAME
 import os
 
 def create_app(test_config=None):
