@@ -1,3 +1,7 @@
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Column, Integer, String, Float
+
 from .urlshort import db
 
 class URL(db.Model):
