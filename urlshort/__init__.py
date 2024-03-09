@@ -19,4 +19,9 @@ def create_app(test_config=None):
 
     app.cli.add_command(create_tables)
 
+    # Application-wide error handler
+    @app.errorhandler(404)
+    def page_not_found_appwide(error):
+        return render_template('page_not_found.html'), 404
+
     return app
