@@ -24,4 +24,12 @@ def create_app(test_config=None):
     def page_not_found_appwide(error):
         return render_template('page_not_found.html'), 404
 
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+
+        # Log the error for debugging
+        app.logger.error(f'Unhandled Exception: {error}')
+
+        return render_template('page_not_found.html'), 500
+
     return app
