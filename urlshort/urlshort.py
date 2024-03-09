@@ -2,20 +2,22 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 import json
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
-from . import db
+from . import db  # Ensure this import works correctly in your project structure
 
-bp = Blueprint('urlshort',__name__)
+bp = Blueprint('urlshort', __name__)
 
 class URL(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
-    url = db.Column(db.String(255))
-    filepath = db.Column(db.String(255))
+    url = db.Column(db.String(255), nullable=True)
+    file_content = db.Column(db.LargeBinary, nullable=True)  # Store file content
+    filename = db.Column(db.String(255), nullable=True)  # Store original filename
 
-    def __init__(self, code, url=None, filepath=None):
+    def __init__(self, code, url=None, file_content=None, filename=None):
         self.code = code
         self.url = url
-        self.filepath = filepath
+        self.file_content = file_content
+        self.filename = filename
 
 #creating a route
 @bp.route('/') #redirect to the base url.
@@ -36,10 +38,9 @@ def your_url():
         if 'url' in request.form.keys():
             new_url = URL(code=code, url=request.form['url'])
         else:
-            f = request.files['file']
-            full_name = code + secure_filename(f.filename)
-            f.save('./static/user_files/' + full_name)
-            new_url = URL(code=code, filepath=full_name)
+            file = request.files['file']
+            file_content = file.read()
+            new_url = URL(code=code, file_content=file_content, filename=secure_filename(file.filename))
 
         db.session.add(new_url)
         db.session.commit()
@@ -48,7 +49,6 @@ def your_url():
     else:
         return redirect(url_for('urlshort.home'))
 
-
 @bp.route('/<string:code>')
 def redirect_to_url(code):
     url_record = URL.query.filter_by(code=code).first()
@@ -56,7 +56,8 @@ def redirect_to_url(code):
         if url_record.url:
             return redirect(url_record.url)
         else:
-            return redirect(url_for('static', filename='user_files/' + url_record.filepath))
+            # Handling file serving is more complex. Consider uploading to a service like S3 and serving from there.
+            abort(404)  # Simplified for this example
     return abort(404)
 
 
