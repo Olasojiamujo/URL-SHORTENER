@@ -1,7 +1,7 @@
 from flask import Flask
 from .commands import create_tables
 from .urlshort import db
-from .urlshort.bp import bp
+from .urlshort import bp
 import os
 
 def create_app(test_config=None):
