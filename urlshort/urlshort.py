@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
 import json
 from werkzeug.utils import secure_filename
-from flask_sqlalchemy import SQLAlchemy
-from . import db  # Ensure this import works correctly in your project structure
+from .__init__ import db
 
 bp = Blueprint('urlshort', __name__)
 
