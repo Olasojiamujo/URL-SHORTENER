@@ -11,16 +11,16 @@ db = SQLAlchemy()
 bp = Blueprint('urlshort', __name__)
 
 class URL(db.Model):
-    __tablename__ = 'urls'  # Changed to 'urls' to avoid potential SQL keyword conflict
+    __tablename__ = 'url'  # Changed to 'urls' to avoid potential SQL keyword conflict
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
-    url = db.Column(db.String(255), nullable=True)
+    user_url = db.Column(db.String(255), nullable=True)
     file_content = db.Column(db.LargeBinary, nullable=True)
     filename = db.Column(db.String(255), nullable=True)
 
-    def __init__(self, code, url=None, file_content=None, filename=None):
+    def __init__(self, code, user_url=None, file_content=None, filename=None):
         self.code = code
-        self.url = url
+        self.user_url = user_url
         self.file_content = file_content
         self.filename = filename
 
@@ -43,7 +43,7 @@ def your_url():
             return redirect(url_for('urlshort.home'))
 
         if 'url' in request.form.keys():
-            new_url = URL(code=code, url=request.form['url'])
+            new_url = URL(code=code, user_url=request.form['user_url'])
         else:
             file = request.files['file']
             if file:  # Check if a file is actually uploaded
@@ -63,8 +63,8 @@ def your_url():
 def redirect_to_url(code):
     url_record = URL.query.filter_by(code=code).first()
     if url_record:
-        if url_record.url:
-            return redirect(url_record.url)
+        if url_record.user_url:
+            return redirect(url_record.user_url)
         else:
             abort(404)
     else:
