@@ -25,7 +25,7 @@ def your_url():
             return redirect(url_for('urlshort.home'))
 
         if 'url' in request.form.keys():
-            new_url = SHORTNAME(code=code, user_url=request.form['user_url'])
+            new_url = SHORTNAME(code=code, url=request.form['url'])
         else:
             file = request.files['file']
             if file:  # Check if a file is actually uploaded
@@ -46,8 +46,8 @@ def your_url():
 def redirect_to_url(code):
     url_record = SHORTNAME.query.filter_by(code=code).first()
     if url_record:
-        if url_record.user_url:
-            return redirect(url_record.user_url)
+        if url_record.url:
+            return redirect(url_record.url)
         else:
             abort(404)
     else:
