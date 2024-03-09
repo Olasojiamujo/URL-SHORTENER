@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Float, LargeBinary
 from .extensions import db
 
 class URL(db.Model):
-    __tablename__ = 'url'
+    __tablename__ = 'URL'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
     user_url = db.Column(db.String(255), nullable=True)
