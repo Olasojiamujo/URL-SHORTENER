@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from .commands import create_tables
 from .urlshort import db
 from .urlshort import bp
