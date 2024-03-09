@@ -11,7 +11,6 @@ db = SQLAlchemy()
 bp = Blueprint('urlshort', __name__)
 
 class URL(db.Model):
-    __tablename__ = 'url'  # Changed to 'urls' to avoid potential SQL keyword conflict
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
     user_url = db.Column(db.String(255), nullable=True)
@@ -55,7 +54,7 @@ def your_url():
 
         db.session.add(new_url)
         db.session.commit()
-        return render_template('your_url.html')
+        return render_template('your_url.html', code=code)
     else:
         return redirect(url_for('urlshort.home'))
 
