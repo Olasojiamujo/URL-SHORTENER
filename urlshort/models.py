@@ -1,5 +1,3 @@
-from sqlalchemy import Column, Integer, String, Float, LargeBinary
-
 from .extensions import db
 
 class SHORTNAME(db.Model):
