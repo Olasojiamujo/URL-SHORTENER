@@ -4,15 +4,14 @@ from werkzeug.utils import secure_filename
 from .models import SHORTNAME
 from .extensions import db
 
+
 bp = Blueprint('urlshort', __name__)
+
 
 @bp.route('/')
 def home():
     return render_template('home.html', codes=session.keys())
 
-@bp.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(bp.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @bp.route('/your-url', methods=['GET', 'POST'])
 def your_url():
@@ -21,14 +20,14 @@ def your_url():
         existing_url = SHORTNAME.query.filter_by(code=code).first()
 
         if existing_url:
-            flash('That Shortname has already been taken. Please use another short name')
+            flash('That Shortname has already been taken. Please use another short name') # Check if a short name has been used (case-sensitive)
             return redirect(url_for('urlshort.home'))
 
         if 'url' in request.form.keys():
             new_url = SHORTNAME(code=code, url=request.form['url'])
         else:
             file = request.files['file']
-            if file:  # Check if a file is actually uploaded
+            if file:  # Check if a file is actually uploaded 
                 file_content = file.read()
                 new_url = SHORTNAME(code=code, file_content=file_content, filename=secure_filename(file.filename))
             else:
@@ -42,6 +41,7 @@ def your_url():
     else:
         return redirect(url_for('urlshort.home'))
 
+
 @bp.route('/<string:code>')
 def redirect_to_url(code):
     url_record = SHORTNAME.query.filter_by(code=code).first()
@@ -53,10 +53,17 @@ def redirect_to_url(code):
     else:
         abort(404)
 
+
 @bp.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
 
+
 @bp.route('/api')
 def session_api():
     return jsonify(list(session.keys()))
+
+
+@bp.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(bp.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
