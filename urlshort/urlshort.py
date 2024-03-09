@@ -55,7 +55,7 @@ def your_url():
 
         db.session.add(new_url)
         db.session.commit()
-        return render_template('your_url.html', code=code)
+        return render_template('your_url.html')
     else:
         return redirect(url_for('urlshort.home'))
 
