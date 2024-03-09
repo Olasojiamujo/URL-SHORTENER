@@ -13,6 +13,9 @@ def create_app(test_config=None):
     app.secret_key = 'your_secret_key'  # Set a secret key for sessions and cookies
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    @app.cli.command('db_create')
+    def db_create():
+        db.create_all()
     # Initialize the database with your Flask app
     db.init_app(app)
 
