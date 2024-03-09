@@ -1,13 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint, send_from_directory
 import os
 import json
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Float
 from werkzeug.utils import secure_filename
 from .models import URL
-
-# Create the SQLAlchemy db instance globally
-db = SQLAlchemy()
+from .extensions import db
 
 bp = Blueprint('urlshort', __name__)
 
