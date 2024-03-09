@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint
+import os
+from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint, send_from_directory 
 import json
 from sqlalchemy import Column, Integer, String, Float
 from werkzeug.utils import secure_filename
 from .__init__ import db
+
 
 bp = Blueprint('urlshort', __name__)
 
@@ -25,6 +27,12 @@ class URL(db.Model):
 def home(): #this is a regular python code
     return render_template('home.html', codes=session.keys())
 #    return render_template('home.html', name='Ola')
+
+
+@bp.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(bp.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 
 @bp.route('/your-url', methods=['GET', 'POST'])
 def your_url():
