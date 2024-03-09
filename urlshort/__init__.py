@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from .commands import create_tables
-from .urlshort import db, bp, URL
+from .urlshort import db, bp
 import os
 
 def create_app(test_config=None):
