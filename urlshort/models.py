@@ -1,8 +1,6 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, LargeBinary
 
-from .urlshort import db
+from .extensions import db
 
 class URL(db.Model):
     __tablename__ = 'url'
