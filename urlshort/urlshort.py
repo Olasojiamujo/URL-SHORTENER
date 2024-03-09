@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, abort, session, jsonify, Blueprint, send_from_directory
 import os
-import json
 from werkzeug.utils import secure_filename
 from .models import SHORTNAME
 from .extensions import db
