@@ -1,7 +1,6 @@
 from .extensions import db
 
 class SHORTNAME(db.Model):
-    __tablename__ = 'shortname'
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(80), unique=True, nullable=False)
     user_url = db.Column(db.String(255), nullable=True)
