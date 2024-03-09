@@ -4,25 +4,12 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer, String, Float
 from werkzeug.utils import secure_filename
+from .models import URL
 
 # Create the SQLAlchemy db instance globally
 db = SQLAlchemy()
 
 bp = Blueprint('urlshort', __name__)
-
-class URL(db.Model):
-    __tablename__ = 'url'
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.String(80), unique=True, nullable=False)
-    user_url = db.Column(db.String(255), nullable=True)
-    file_content = db.Column(db.LargeBinary, nullable=True)
-    filename = db.Column(db.String(255), nullable=True)
-
-    def __init__(self, code, user_url=None, file_content=None, filename=None):
-        self.code = code
-        self.user_url = user_url
-        self.file_content = file_content
-        self.filename = filename
 
 @bp.route('/')
 def home():
