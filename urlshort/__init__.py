@@ -1,7 +1,7 @@
 from flask import Flask
-import click
-from flask.cli import with_appcontext
+from .commands import create_tables
 from .urlshort import db
+from .urlshort.bp import bp
 import os
 
 def create_app(test_config=None):
@@ -15,12 +15,8 @@ def create_app(test_config=None):
     # Initialize the database with your Flask app
     db.init_app(app)
 
-    from . import urlshort
-    app.register_blueprint(urlshort.bp)
+    app.register_blueprint(bp)
 
-    @click.command(name='create_tables')
-    @with_appcontext
-    def create_tables():
-        db.create_all()
+    app.cli.add_command(create_tables)
 
     return app
