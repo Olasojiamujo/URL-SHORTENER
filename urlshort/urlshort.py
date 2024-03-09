@@ -55,8 +55,6 @@ def your_url():
         db.session.add(new_url)
         db.session.commit()
 
-        code = URL.query.filter_by(code=True).all()
-
         context = {
             'code': code
         }
